@@ -1,6 +1,10 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.io.FileWriter;
+import java.io.File; 
+import java.util.Scanner;
+import java.io.IOException; 
+import java.io.FileNotFoundException;  // Import this class to handle errors
 public class Transaction {
 	
 	private  static Transaction instance;
@@ -9,17 +13,20 @@ public class Transaction {
 
     // Perform the borrowing of a book
     public boolean borrowBook(Book book, Member member) {
-        if (book.isAvailable()&& instance != null) {
+        if (book.isAvailable()&& instance == null) {
             book.borrowBook();
             member.borrowBook(book); 
             String transactionDetails = getCurrentDateTime() + " - Borrowing: " + member.getName() + " borrowed " + book.getTitle();
             System.out.println(transactionDetails);
+            
+            saveTransaction(transactionDetails);
             instance = new Transaction(); 
             return true;
         } else {
             System.out.println("The book is not available.");
             return false;
         }
+        
     }
 
     // Perform the returning of a book
@@ -29,6 +36,7 @@ public class Transaction {
             book.returnBook();
             String transactionDetails = getCurrentDateTime() + " - Returning: " + member.getName() + " returned " + book.getTitle();
             System.out.println(transactionDetails);
+            saveTransaction(transactionDetails);
         } else {
             System.out.println("This book was not borrowed by the member.");
         }
@@ -40,12 +48,37 @@ public class Transaction {
         return sdf.format(new Date());
     }
 
-	public void displayTransactionHistory() {
-		// TODO Auto-generated method stub
+	public String displayTransactionHistory() {
+		String data = null;
+	      File myObj = new File("transactions.txt");
+	      try {
+			Scanner myReader = new Scanner(myObj);
+			 while (myReader.hasNextLine()) {
+			        data = myReader.nextLine();
+			      }
+			 myReader.close();
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		}
+	     
+	      
 		
+		return data;
 	}
-	public void saveTransacon(String thing)
+	
+	public void saveTransaction(String details)
 	{
+		FileWriter myWriter;
+		try {
+			myWriter = new FileWriter("transactions.txt");
+		      myWriter.write(details);
+		      myWriter.close();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	
 		
 	}
 	
