@@ -4,9 +4,13 @@ public class Book {
     private boolean available;
 
     public Book(int id, String title) {
-        this.id = id;
-        this.title = title;
-        this.available = true;
+        if (isValidId(id))
+        {
+        	this.id = id;
+            this.title = title;
+            this.available = true;
+        }
+        
     }
 
     // Getter methods
@@ -23,9 +27,14 @@ public class Book {
     }
 
     // Method to borrow the book
-    public void borrowBook() {
-        if (available) {
+    public void borrowBook() throws Exception {
+        if (available)
+        {
             available = false;
+        }
+        else 
+        {
+        	throw new Exception("out of bounds");
         }
     }
 
