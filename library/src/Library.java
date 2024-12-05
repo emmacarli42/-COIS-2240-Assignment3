@@ -4,15 +4,55 @@ import java.util.List;
 public class Library {
     private List<Member> members = new ArrayList<Member>();
     private List<Book> books = new ArrayList<Book>();
+   
 
+    private boolean checkBook(int inpNum) {
+    	boolean found = false;
+    	for (int i = 0; i<books.size();i++)
+    	{
+    		if (books.get(i).getId() ==inpNum)
+    		{
+    			found = true;
+    		}
+    	}
+    	return found;
+    }
+    private boolean checkMember(int inpNum) {
+    	boolean found = false;
+    	for (int i = 0;i< members.size();i++)
+    	{
+    		if (members.get(i).getId() ==inpNum)
+    		{
+    			found = true;
+    		}
+    	}
+    	return found;
+    }
     // Add a new member to the library
     public void addMember(Member member) {
-        members.add(member);
+    	if (checkMember(member.getId())==false)
+    	{
+    		members.add(member);
+    		 System.out.println("Member added to library successfully.");
+    	}
+    	else 
+    	{
+    		System.out.print("this memeber already exists.\n");
+    	}
     }
     
     // Add a new book to the library
     public void addBook(Book book) {
-        books.add(book);
+    	if (checkBook(book.getId())==false)
+    	{
+    		books.add(book);
+    		System.out.println("Book added successfully.");
+    	}
+    	else 
+    	{
+    		System.out.print("this book already exists. \n");
+    	}
+        
     }
 
     // Find a member by ID
@@ -44,4 +84,5 @@ public class Library {
     public List<Book> getBooks() {
         return books;
     }
+    
 }
